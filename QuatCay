@@ -1,0 +1,144 @@
+
+//===============================QUẠT CÂY==================================
+mat4 model_quatcay, model_view_quatcay;
+float qcqc[] = { 0, 0, 0 , 0, 0 };
+int tupnang = 0;
+float tocdo_qc_tupnang = 0.5f;
+int tocdo_qc_canh = 0;
+
+void de_quatcay(float x, float y, float z)
+{
+	mat4 instance = identity_mat4();
+	for (int i = 0; i <= 360; i += 1) {
+		instance = translate(vec3(x, y, z)) * rotate_y(i) * scale(vec3(2.0, 0.2, 0.1));
+		mat4 model_base = model_quatcay * instance;
+		glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base.m);
+		glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), 0.96, 0.57, 0.55);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+	}
+}
+
+void than_quatcay(float x, float y, float z)
+{
+	mat4 instance = identity_mat4();
+	instance = translate(vec3(x, y, z)) * scale(vec3(0.4, 2.4, 0.4));
+	mat4 model_base = model_quatcay * instance;
+	glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base.m);
+	glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), 0.5, 0.5, 0.5);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+void docao_quatcay(float x, float y, float z)
+{
+	mat4 instance = identity_mat4();
+	for (int i = 0; i <= 360; i += 1) {
+		instance = translate(vec3(x, y, z)) * rotate_y(i) * scale(vec3(0.2, 1.4, 0.1));
+		mat4 model_base = model_quatcay * instance;
+		glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base.m);
+		glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), 0.76, 0.81, 0.84);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+	}
+}
+
+void dongco_quatcay(float x, float y, float z)
+{
+	mat4 instance = identity_mat4();
+	instance = translate(vec3(x, y, z)) * scale(vec3(0.6, 0.6, 1.0));
+	mat4 model_base = model_quatcay * instance;
+	glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base.m);
+	glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), 0.5, 0.5, 0.5);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+void truc_quatcay(float x, float y, float z)
+{
+	mat4 instance = identity_mat4();
+	for (int i = 0; i <= 360; i += 1) {
+		instance = translate(vec3(x, y, z)) * rotate_z(i) * scale(vec3(0.2, 0.2, 0.4));
+		mat4 model_base = model_quatcay * instance;
+		glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base.m);
+		glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), 0.76, 0.81, 0.84);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+	}
+}
+
+void trunoicanhquat_quatcay(float x, float y, float z)
+{
+	mat4 instance = identity_mat4();
+	for (int i = 0; i <= 360; i += 1) {
+		instance = translate(vec3(x, y, z)) * rotate_z(i) * scale(vec3(0.4, 0.4, 0.2));
+		mat4 model_base = model_quatcay * instance;
+		glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base.m);
+		glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), 0.96, 0.57, 0.55);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+	}
+}
+
+void canhquat_quatcay(float x, float y, float z, int goc)
+{
+	mat4 instance = identity_mat4();
+	instance = translate(vec3(0, y - 0.7, 0)) * rotate_z(goc) * translate(vec3(0, -y + 0.7, 0)) * translate(vec3(x, y, z)) * scale(vec3(0.3, 1.4, 0.05));
+	mat4 model_base = model_quatcay * instance;
+	glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base.m);
+	glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), 0.5, 0.5, 0.5);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+void quatcay(float x, float y, float z, int goc)
+{
+	model_quatcay = translate(vec3(x, y, z)) * rotate_y(goc) * scale(vec3(1.0, 1.0, 1.0));
+
+	model_quatcay = model_quatcay * translate(vec3(qcqc[4], 0, 0));
+	de_quatcay(0, 0, 0);
+	than_quatcay(0.0, 1.3, 0.0);
+
+	model_quatcay = model_quatcay * translate(vec3(0.0, qcqc[0], 0.0));
+	docao_quatcay(0.0, 3.2, 0.0);
+
+	switch (tupnang)
+	{
+	case 0:
+		model_quatcay = model_quatcay * translate(vec3(0.0, 0.0, -0.2)) * rotate_y(qcqc[1]) * translate(vec3(0.0, 0.0, 0.2));
+		break;
+	case 1:
+		model_quatcay = model_quatcay * translate(vec3(0.0, 0.0, -0.2)) * rotate_y(qcqc[1]) * translate(vec3(0.0, 0.0, 0.2));
+		break;
+	default:
+		break;
+	}
+	dongco_quatcay(0.0, 4.0, -0.2);
+
+	//========================
+
+	mat4 model_quatcay_bandau = model_quatcay;
+	switch (tocdo_qc_canh)
+	{
+	case 0:
+		model_quatcay = model_quatcay;
+		break;
+	case 1:
+		model_quatcay = model_quatcay_bandau * translate(vec3(0.0, 4.0, 0.0)) * rotate_z(qcqc[2]) * translate(vec3(0.0, -4.0, 0.0));
+		break;
+	case 2:
+		model_quatcay = model_quatcay_bandau * translate(vec3(0.0, 4.0, 0.0)) * rotate_z(qcqc[3]) * translate(vec3(0.0, -4.0, 0.0));
+		break;
+	default:
+		break;
+	}
+	truc_quatcay(0.0, 4.0, -0.9);
+	trunoicanhquat_quatcay(0.0, 4.0, -1.2);
+	canhquat_quatcay(0.0, 4.7, -1.2, 0);
+	canhquat_quatcay(0.0, 4.7, -1.2, 120);
+	canhquat_quatcay(0.0, 4.7, -1.2, 240);
+}
+
+void nhieu_quatcay()
+{
+	quatcay(8.5,	-6.9, 2.8, 90);
+	quatcay(8.5,	-6.9, -4.2, 90);
+	quatcay(8.5,	-6.9, 9.8, 90);
+	quatcay(-8.5,	-6.9, 2.8, -90);
+	quatcay(-8.5,	-6.9, -4.2, -90);
+	quatcay(-8.5,	-6.9, 9.8, -90);
+
+}
