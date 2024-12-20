@@ -1,0 +1,127 @@
+//===================================Người================================
+mat4 model_nguoi; // Khai báo ma trận mô hình cho nhân vật
+float ngng[] = { 0, 0, 0 }; // Mảng để lưu trữ các góc hoặc trạng thái khác của nhân vật
+
+// Hàm để vẽ thân người
+void body(float x, float y, float z, float x1, float y1, float z1)
+{
+    mat4 instance = identity_mat4(); // Tạo ma trận đơn vị cho thể hiện
+    // Di chuyển và thay đổi kích thước thân người
+    instance = translate(vec3(x, y, z)) * scale(vec3(x1, y1, z1));
+    // Tính toán ma trận mô hình tổng thể
+    mat4 model_base = model_nguoi * instance;
+    // Cập nhật ma trận mô hình cho shader
+    glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base.m);
+    // Đặt màu sắc cho thân người
+    glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), 0.46, 0.71, 0.81);
+    // Vẽ thân người bằng các tam giác
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+// Hàm để vẽ chân trên
+void upper_leg(float x, float y, float z, float x1, float y1, float z1, float r, float g, float b)
+{
+    mat4 instance = identity_mat4(); // Tạo ma trận đơn vị cho thể hiện
+    // Di chuyển và thay đổi kích thước chân
+    instance = translate(vec3(x, y, z)) * scale(vec3(x1, y1, z1));
+    // Tính toán ma trận mô hình tổng thể
+    mat4 model_base = model_nguoi * instance;
+    // Cập nhật ma trận mô hình cho shader
+    glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base.m);
+    // Đặt màu sắc cho chân
+    glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), r, g, b);
+    // Vẽ chân bằng các tam giác
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+// Hàm để vẽ tay trên
+void upper_arm(float x, float y, float z, float x1, float y1, float z1, float r, float g, float b)
+{
+    mat4 instance = identity_mat4(); // Tạo ma trận đơn vị cho thể hiện
+    // Di chuyển và thay đổi kích thước tay
+    instance = translate(vec3(x, y, z)) * scale(vec3(x1, y1, z1));
+    // Tính toán ma trận mô hình tổng thể
+    mat4 model_base = model_nguoi * instance;
+    // Cập nhật ma trận mô hình cho shader
+    glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base.m);
+    // Đặt màu sắc cho tay
+    glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), r, g, b);
+    // Vẽ tay bằng các tam giác
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+// Hàm để vẽ cổ
+void neck(float x, float y, float z, float x1, float y1, float z1, float r, float g, float b)
+{
+    mat4 instance = identity_mat4(); // Tạo ma trận đơn vị cho thể hiện
+    // Di chuyển và thay đổi kích thước cổ
+    instance = translate(vec3(x, y, z)) * scale(vec3(x1, y1, z1));
+    // Tính toán ma trận mô hình tổng thể
+    mat4 model_base = model_nguoi * instance;
+    // Cập nhật ma trận mô hình cho shader
+    glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base.m);
+    // Đặt màu sắc cho cổ
+    glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), r, g, b);
+    // Vẽ cổ bằng các tam giác
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+// Hàm để vẽ đầu
+void head(float x, float y, float z, float x1, float y1, float z1, float r, float g, float b)
+{
+    mat4 instance = identity_mat4(); // Tạo ma trận đơn vị cho thể hiện
+    // Di chuyển và thay đổi kích thước đầu
+    instance = translate(vec3(x, y, z)) * scale(vec3(x1, y1, z1));
+    // Tính toán ma trận mô hình tổng thể
+    mat4 model_base = model_nguoi * instance;
+    // Cập nhật ma trận mô hình cho shader
+    glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base.m);
+    // Đặt màu sắc cho đầu
+    glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), r, g, b);
+    // Vẽ đầu bằng các tam giác
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+// Hàm để vẽ toàn bộ người
+void Robot(float x, float y, float z, float goc)
+{
+    // Tạo ma trận mô hình cho người với vị trí và góc quay
+    model_nguoi = translate(vec3(x, y, z)) * rotate_y(goc) * scale(vec3(1.5, 1.5, 1.5));
+    // Vẽ thân người
+    body(0, 0, 0, 1, 1.6, 0.4);
+    // Vẽ cổ
+    neck(0, 0.9, 0, 0.2, 0.2, 0.2, 1, 0.8, 0.76);
+
+    // Lưu lại ma trận mô hình cho các phần tiếp theo
+    mat4 model_nguoi_bandau = model_nguoi;
+    // Vẽ đầu người
+    model_nguoi = model_nguoi_bandau * translate(vec3(0, 1.2, 0)) * rotate_z(ngng[0]) * translate(vec3(0, -1.2, 0));
+    head(0, 1.3, 0, 0.6, 0.6, 0.4, 1, 0.8, 0.76);
+
+    // Vẽ chân bên trái
+    model_nguoi = model_nguoi_bandau * translate(vec3(0.3, -1.0, 0)) * rotate_x(ngng[1]) * translate(vec3(0.3, 1.0, 0));
+    upper_leg(-0.3, -1.0, 0, 0.4, 0.4, 0.2, 0.46, 0.71, 0.81);
+    upper_leg(-0.3, -1.6, 0, 0.2, 0.8, 0.16, 1, 0.8, 0.76);
+    
+    // Vẽ chân bên phải
+    model_nguoi = model_nguoi_bandau * translate(vec3(0.3, -1.0, 0)) * rotate_x(-ngng[1]) * translate(vec3(0.3, 1.0, 0));
+    upper_leg(-0.9, -1.0, 0, 0.4, 0.4, 0.2, 0.46, 0.71, 0.81);
+    upper_leg(-0.9, -1.6, 0, 0.2, 0.8, 0.16, 1, 0.8, 0.76);
+    
+    // Vẽ tay bên trái
+    model_nguoi = model_nguoi_bandau * translate(vec3(0.0, 0.6, 0)) * rotate_x(-ngng[1]) * translate(vec3(0.0, -0.6, 0));
+    upper_arm(0.65, 0.6, 0, 0.3, 0.4, 0.16, 0.46, 0.71, 0.81);
+    upper_arm(0.65, 0.1, 0, 0.2, 0.6, 0.14, 1, 0.8, 0.76);
+    
+    // Vẽ tay bên phải
+    model_nguoi = model_nguoi_bandau * translate(vec3(0.0, 0.6, 0)) * rotate_x(ngng[1]) * translate(vec3(0.0, -0.6, 0));
+    upper_arm(-0.65, 0.6, 0, 0.3, 0.4, 0.16, 0.46, 0.71, 0.81);
+    upper_arm(-0.65, 0.1, 0, 0.2, 0.6, 0.14, 1, 0.8, 0.76);
+}
+
+// Hàm để vẽ nhiều người
+void nhieu_nguoi()
+{
+    // Vẽ một người tại vị trí (0, -4, 0) với góc quay 0 độ
+    Robot(0, -4, 0, 0);
+}
