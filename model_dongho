@@ -1,0 +1,208 @@
+//============================== Đồng Hồ ==============================
+mat4 model_dongho; // Khai báo ma trận mô hình cho đồng hồ
+float dhdh[] = {0, 0, 0}; // Mảng để lưu trữ các góc hoặc trạng thái khác của đồng hồ
+
+// Hàm để vẽ mặt đồng hồ
+void mat_dongho(float x, float y, float z)
+{
+    mat4 instance = identity_mat4(); // Tạo ma trận đơn vị cho thể hiện
+    // Di chuyển và thay đổi kích thước mặt đồng hồ
+    instance = translate(vec3(x, y, z)) * scale(vec3(1.0, 1.0, 0.2));
+    // Tính toán ma trận mô hình tổng thể
+    mat4 model_base = model_dongho * instance;
+    // Cập nhật ma trận mô hình cho shader
+    glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base.m);
+    // Đặt màu sắc cho mặt đồng hồ
+    glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), 0.5, 0.8, 1);
+    // Vẽ mặt đồng hồ bằng các tam giác
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+// Hàm để vẽ kim giờ tại vị trí 12 giờ
+void gio12(float x, float y, float z)
+{
+    mat4 instance = identity_mat4(); // Tạo ma trận đơn vị cho thể hiện
+    // Di chuyển và thay đổi kích thước kim giờ
+    instance = translate(vec3(x, y, z)) * scale(vec3(0.05, 0.2, 0.05));
+    // Tính toán ma trận mô hình tổng thể
+    mat4 model_base = model_dongho * instance;
+    // Cập nhật ma trận mô hình cho shader
+    glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base.m);
+    // Đặt màu sắc cho kim giờ
+    glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), 0, 0, 0);
+    // Vẽ kim giờ bằng các tam giác
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+// Hàm để vẽ kim giờ tại vị trí 3 giờ
+void gio3(float x, float y, float z)
+{
+    mat4 instance = identity_mat4(); // Tạo ma trận đơn vị cho thể hiện
+    // Di chuyển và xoay kim giờ
+    instance = rotate_z(-90) * translate(vec3(x, y, z)) * scale(vec3(0.05, 0.2, 0.05));
+    // Tính toán ma trận mô hình tổng thể
+    mat4 model_base = model_dongho * instance;
+    // Cập nhật ma trận mô hình cho shader
+    glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base.m);
+    // Đặt màu sắc cho kim giờ
+    glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), 0, 0, 0);
+    // Vẽ kim giờ bằng các tam giác
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+// Hàm để vẽ kim giờ tại vị trí 6 giờ
+void gio6(float x, float y, float z)
+{
+    mat4 instance = identity_mat4(); // Tạo ma trận đơn vị cho thể hiện
+    // Di chuyển và xoay kim giờ
+    instance = rotate_z(-180) * translate(vec3(x, y, z)) * scale(vec3(0.05, 0.2, 0.05));
+    // Tính toán ma trận mô hình tổng thể
+    mat4 model_base = model_dongho * instance;
+    // Cập nhật ma trận mô hình cho shader
+    glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base.m);
+    // Đặt màu sắc cho kim giờ
+    glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), 0, 0, 0);
+    // Vẽ kim giờ bằng các tam giác
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+// Hàm để vẽ kim giờ tại vị trí 9 giờ
+void gio9(float x, float y, float z)
+{
+    mat4 instance = identity_mat4(); // Tạo ma trận đơn vị cho thể hiện
+    // Di chuyển và xoay kim giờ
+    instance = rotate_z(-270) * translate(vec3(x, y, z)) * scale(vec3(0.05, 0.2, 0.05));
+    // Tính toán ma trận mô hình tổng thể
+    mat4 model_base = model_dongho * instance;
+    // Cập nhật ma trận mô hình cho shader
+    glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base.m);
+    // Đặt màu sắc cho kim giờ
+    glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), 0, 0, 0);
+    // Vẽ kim giờ bằng các tam giác
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+// Hàm để vẽ kim đồng hồ
+void kimDongHo()
+{
+    mat4 instance = identity_mat4(); // Tạo ma trận đơn vị cho thể hiện
+    // Di chuyển và thay đổi kích thước kim đồng hồ
+    instance = translate(vec3(0.0, 0.2, -0.125)) * scale(vec3(0.05, 0.4, 0.05));
+    // Tính toán ma trận mô hình tổng thể
+    mat4 model_base = model_dongho * instance;
+    // Cập nhật ma trận mô hình cho shader
+    glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base.m);
+    // Đặt màu sắc cho kim đồng hồ
+    glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), 1, 0, 0);
+    // Vẽ kim đồng hồ bằng các tam giác
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+// Hàm để vẽ toàn bộ đồng hồ với vị trí và góc quay
+void dongho(float x, float y, float z, int goc)
+{
+    // Tạo ma trận mô hình cho đồng hồ với vị trí và góc quay
+    model_dongho = translate(vec3(x, y, z)) * rotate_y(goc) * scale(vec3(1.5, 1.5, 1.5));
+    // Vẽ mặt đồng hồ
+    mat_dongho(0, 0, 0);
+    // Vẽ các kim giờ ở các vị trí tương ứng
+    gio12(0.0, 0.35, -0.125);
+    gio3(0.0, 0.35, -0.125);
+    gio6(0.0, 0.35, -0.125);
+    gio9(0.0, 0.35, -0.125);
+    // Xoay kim đồng hồ theo góc đã lưu
+    model_dongho = model_dongho * rotate_z(dhdh[0]);
+    // Vẽ kim đồng hồ
+    kimDongHo();
+}
+
+//============================== Bát Đĩa ==============================
+mat4 model_batdia; // Khai báo ma trận mô hình cho bát đĩa
+float batdia[] = { 0, 0, 0 }; // Mảng để lưu trữ các góc hoặc trạng thái khác của bát đĩa
+int bd = 0; // Biến để lưu trữ trạng thái bát đĩa
+
+// Hàm để vẽ đĩa tròn
+void dia_tron(float x, float y, float z, float goc, float cao, float r, float g, float b) {
+    mat4 instance = identity_mat4(); // Tạo ma trận đơn vị cho thể hiện
+    // Vẽ vòng tròn từ 0 đến 360 độ
+    for (int i = 0; i <= 360; i += 1) {
+        instance = translate(vec3(x, y, z)) * rotate_y(i) * scale(vec3(goc, cao, 0.1));
+        mat4 model_base = model_batdia * instance;
+        // Cập nhật ma trận mô hình cho shader
+        glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base.m);
+        // Đặt màu sắc cho đĩa
+        glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), r, g, b);
+        // Vẽ đĩa bằng các tam giác
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+    }
+}
+
+// Hàm để vẽ bát tròn
+void bat_tron(float x, float y, float z, float outer_radius, float inner_radius, float height, float r, float g, float b) 
+{
+    int num_segments = 20; // Số lượng phân đoạn để vẽ hình tròn
+    // Vẽ bề mặt bên ngoài của bát
+    mat4 instance = identity_mat4();
+    for (int i = 0; i <= 360; i += 1) {
+        instance = translate(vec3(x, y, z)) * rotate_y(i) * scale(vec3(outer_radius, height, 0.1));
+        mat4 model_base = model_batdia * instance;
+        // Cập nhật ma trận mô hình cho shader
+        glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base.m);
+        // Đặt màu sắc cho bát
+        glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), r, g, b);
+        // Vẽ bát bằng các tam giác
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+    }
+
+    // Vẽ bề mặt bên trong của bát
+    mat4 inner_instance = identity_mat4();
+    for (int i = 0; i <= 360; i += 1) {
+        inner_instance = translate(vec3(x, y, z)) * rotate_y(i) * scale(vec3(inner_radius, height, 0.1));
+        mat4 model_base_inner = model_batdia * inner_instance;
+        // Cập nhật ma trận mô hình cho shader
+        glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base_inner.m);
+        // Đặt màu sắc cho bát bên trong
+        glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), 0.9, 0.8, 0.7);
+        // Vẽ bát bên trong bằng các tam giác
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+    }
+}
+
+// Hàm để vẽ đũa
+void doi_dua(float x, float y, float z, float x1, float y1, float z1, int r, int g, int b)
+{
+    mat4 instance = identity_mat4(); // Tạo ma trận đơn vị cho thể hiện
+    // Di chuyển và thay đổi kích thước đũa
+    instance = translate(vec3(x, y, z)) * scale(vec3(x1, y1, z1));
+    mat4 model_base = model_batdia * instance;
+    // Cập nhật ma trận mô hình cho shader
+    glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base.m);
+    // Đặt màu sắc cho đũa
+    glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), r, g, b);
+    // Vẽ đũa bằng các tam giác
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+// Hàm để vẽ bát đĩa
+void bat_dia(float x, float y, float z, int goc)
+{
+    // Tạo ma trận mô hình cho bát đĩa với vị trí và góc quay
+    model_batdia = translate(vec3(x, y, z)) * rotate_y(goc) * scale(vec3(0.2, 0.2, 0.2));
+    
+    // Đặt đĩa lớn hơn lên bàn
+    dia_tron(0.0, 0.1, 0.0, 3.0, 0.05, 1.0, 1.0, 1.0);  // Đĩa màu trắng lớn
+
+    // Đặt bát rỗng lên đĩa
+    bat_tron(0.0, 0.38, 0.0, 2.0, 1.6, 0.5, 0.58, 0.9, 1);  // Bát màu ngà rỗng
+
+    // Vẽ đũa
+    doi_dua(0, 0.7, 0, 3.6, 0.05, 0.05, 0.753, 0.314, 0.314); // Đũa
+    doi_dua(0, 0.7, 0.2, 3.6, 0.05, 0.05, 0.753, 0.314, 0.314); // Đũa
+}
+
+// Hàm để vẽ nhiều bát đĩa
+void nhieu_batdia()
+{
+    bat_dia(3, -4.5, -4, 0); // Vẽ một bát đĩa tại vị trí xác định
+    // Có thể thêm nhiều bát đĩa khác ở đây
+}
