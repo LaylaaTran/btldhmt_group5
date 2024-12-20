@@ -1,0 +1,168 @@
+mat4 model_tubat; // Khai báo ma trận mô hình cho tuba
+float trb[] = { 0, 0, 0 }; // Mảng lưu trữ các góc quay (nếu cần)
+
+// Hàm để vẽ phần đế của tuba
+void day_turb(float x, float y, float z)
+{
+    mat4 instance = identity_mat4(); // Tạo ma trận đơn vị cho thể hiện
+    // Di chuyển và thay đổi kích thước cho phần đế
+    instance = translate(vec3(x, y, z)) * scale(vec3(2.4, 0.1, 1.4));
+    mat4 model_base = model_tubat * instance; // Tính toán ma trận mô hình
+    // Cập nhật ma trận mô hình cho shader
+    glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base.m);
+    // Đặt màu sắc cho phần đế
+    glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), 0.40, 0.27, 0.21);
+    // Vẽ phần đế bằng các tam giác
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+// Hàm để vẽ cạnh tuba
+void canh_turb(float x, float y, float z)
+{
+    mat4 instance = identity_mat4(); // Tạo ma trận đơn vị cho thể hiện
+    // Di chuyển và thay đổi kích thước cho cạnh tuba
+    instance = translate(vec3(x, y, z)) * scale(vec3(0.1, 1.4, 1.4));
+    mat4 model_base = model_tubat * instance; // Tính toán ma trận mô hình
+    // Cập nhật ma trận mô hình cho shader
+    glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base.m);
+    // Đặt màu sắc cho cạnh
+    glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), 0.40, 0.27, 0.21);
+    // Vẽ cạnh bằng các tam giác
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+// Hàm để vẽ cạnh sau tuba
+void canhsau_turb(float x, float y, float z)
+{
+    mat4 instance = identity_mat4(); // Tạo ma trận đơn vị cho thể hiện
+    // Di chuyển và thay đổi kích thước cho cạnh sau
+    instance = translate(vec3(x, y, z)) * scale(vec3(2.4, 1.4, 0.1));
+    mat4 model_base = model_tubat * instance; // Tính toán ma trận mô hình
+    // Cập nhật ma trận mô hình cho shader
+    glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base.m);
+    // Đặt màu sắc cho cạnh sau
+    glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), 0.42, 0.30, 0.19);
+    // Vẽ cạnh sau bằng các tam giác
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+// Hàm để vẽ cạnh giữa tuba
+void canhgiua_turb(float x, float y, float z)
+{
+    mat4 instance = identity_mat4(); // Tạo ma trận đơn vị cho thể hiện
+    // Di chuyển và thay đổi kích thước cho cạnh giữa
+    instance = translate(vec3(x, y, z)) * scale(vec3(0.1, 1.2, 1.4));
+    mat4 model_base = model_tubat * instance; // Tính toán ma trận mô hình
+    // Cập nhật ma trận mô hình cho shader
+    glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base.m);
+    // Đặt màu sắc cho cạnh giữa
+    glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), 0.40, 0.27, 0.21);
+    // Vẽ cạnh giữa bằng các tam giác
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+//===== Đĩa ====
+void matdia(float x, float y, float z)
+{
+    mat4 instance = identity_mat4(); // Tạo ma trận đơn vị cho thể hiện
+    // Vẽ vòng tròn đĩa bằng cách lặp từ 0 đến 360 độ
+    for (int i = 0; i <= 360; i += 1) {
+        instance = translate(vec3(x, y, z)) * rotate_x(i) * scale(vec3(0.04, 0.5, 0.1));
+        mat4 model_base = model_tubat * instance; // Tính toán ma trận mô hình
+        // Cập nhật ma trận mô hình cho shader
+        glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base.m);
+        // Đặt màu sắc cho đĩa
+        glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), 1, 1, 1);
+        // Vẽ đĩa bằng các tam giác
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+    }
+}
+
+// Hàm để vẽ đĩa bên trên
+void daydia(float x, float y, float z)
+{
+    mat4 instance = identity_mat4(); // Tạo ma trận đơn vị cho thể hiện
+    // Vẽ vòng tròn đĩa bằng cách lặp từ 0 đến 360 độ
+    for (int i = 0; i <= 360; i += 1) {
+        instance = translate(vec3(x, y, z)) * rotate_x(i) * scale(vec3(0.02, 0.2, 0.2));
+        mat4 model_base = model_tubat * instance; // Tính toán ma trận mô hình
+        // Cập nhật ma trận mô hình cho shader
+        glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base.m);
+        // Đặt màu sắc cho mặt đĩa
+        glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), 0.5, 0.5, 0.5);
+        // Vẽ đĩa bằng các tam giác
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+    }
+}
+
+// Hàm để vẽ tất cả các đĩa
+void dia(float x, float y, float z)
+{
+    // Vẽ nhiều đĩa với các vị trí khác nhau
+    // Đĩa 1
+    matdia(1.18, -0.35, 0);
+    daydia(1.15, -0.37, 0);
+    // Đĩa 2
+    matdia(1.08, -0.35, 0);
+    daydia(1.05, -0.37, 0);
+    // Đĩa 3
+    matdia(0.98, -0.35, 0);
+    daydia(0.95, -0.37, 0);
+    // Đĩa 4
+    matdia(0.88, -0.35, 0);
+    daydia(0.85, -0.37, 0);
+    // Đĩa 5
+    matdia(0.78, -0.35, 0);
+    daydia(0.75, -0.37, 0);
+    // Đĩa 6
+    matdia(0.68, -0.35, 0);
+    daydia(0.65, -0.37, 0);
+    // Đĩa 7
+    matdia(0.58, -0.35, 0);
+    daydia(0.55, -0.37, 0);
+    // Đĩa 8
+    matdia(0.48, -0.35, 0);
+    daydia(0.45, -0.37, 0);
+    // Đĩa 9
+    matdia(0.38, -0.35, 0);
+    daydia(0.35, -0.37, 0);
+    // Đĩa 10
+    matdia(0.28, -0.35, 0);
+    daydia(0.25, -0.37, 0);
+    // Đĩa 11
+    matdia(0.18, -0.35, 0);
+    daydia(0.15, -0.37, 0);
+    // Đĩa 12
+    matdia(-0.12, -0.35, 0);
+    daydia(-0.15, -0.37, 0);
+    // Đĩa 13
+    matdia(-0.22, -0.35, 0);
+    daydia(-0.25, -0.37, 0);
+    // Đĩa 14
+    matdia(-0.32, -0.35, 0);
+    daydia(-0.35, -0.37, 0);
+    // Đĩa 15
+    matdia(-0.42, -0.35, 0);
+    daydia(-0.45, -0.37, 0);
+    // Đĩa 16
+    matdia(-0.52, -0.35, 0);
+    daydia(-0.55, -0.37, 0);
+    // Đĩa 17
+    matdia(-0.62, -0.35, 0);
+    daydia(-0.65, -0.37, 0);
+    // Đĩa 18
+    matdia(-0.72, -0.35, 0);
+    daydia(-0.75, -0.37, 0);
+    // Đĩa 19
+    matdia(-0.82, -0.35, 0);
+    daydia(-0.85, -0.37, 0);
+    // Đĩa 20
+    matdia(-0.92, -0.35, 0);
+    daydia(-0.95, -0.37, 0);
+    // Đĩa 21
+    matdia(-1.02, -0.35, 0);
+    daydia(-1.05, -0.37, 0);
+    // Đĩa 22
+    matdia(-1.12, -0.35, 0);
+    daydia(-1.15, -0.37, 0);
+}
