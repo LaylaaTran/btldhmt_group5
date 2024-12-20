@@ -1,0 +1,93 @@
+//============================== Bát Đĩa ==============================
+mat4 model_batdia; // Khai báo ma trận mô hình cho bát đĩa
+float batdia[] = { 0, 0, 0 }; // Mảng để lưu trữ các góc hoặc trạng thái khác của bát đĩa
+int bd = 0; // Biến để lưu trữ trạng thái bát đĩa
+
+// Hàm để vẽ đĩa tròn
+void dia_tron(float x, float y, float z, float goc, float cao, float r, float g, float b) {
+    mat4 instance = identity_mat4(); // Tạo ma trận đơn vị cho thể hiện
+    // Vẽ vòng tròn từ 0 đến 360 độ
+    for (int i = 0; i <= 360; i += 1) {
+        // Tạo ma trận thể hiện cho từng đoạn của đĩa
+        instance = translate(vec3(x, y, z)) * rotate_y(i) * scale(vec3(goc, cao, 0.1));
+        mat4 model_base = model_batdia * instance; // Tính toán ma trận mô hình tổng thể
+        // Cập nhật ma trận mô hình cho shader
+        glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base.m);
+        // Đặt màu sắc cho đĩa
+        glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), r, g, b);
+        // Vẽ đĩa bằng các tam giác
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+    }
+}
+
+// Hàm để vẽ bát tròn
+void bat_tron(float x, float y, float z, float outer_radius, float inner_radius, float height, float r, float g, float b) 
+{
+    int num_segments = 20; // Số lượng phân đoạn để vẽ hình tròn
+    // Vẽ bề mặt bên ngoài của bát
+    mat4 instance = identity_mat4();
+    for (int i = 0; i <= 360; i += 1) {
+        // Tạo ma trận thể hiện cho từng đoạn của bát
+        instance = translate(vec3(x, y, z)) * rotate_y(i) * scale(vec3(outer_radius, height, 0.1));
+        mat4 model_base = model_batdia * instance; // Tính toán ma trận mô hình tổng thể
+        // Cập nhật ma trận mô hình cho shader
+        glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base.m);
+        // Đặt màu sắc cho bát
+        glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), r, g, b);
+        // Vẽ bát bằng các tam giác
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+    }
+
+    // Vẽ bề mặt bên trong của bát
+    mat4 inner_instance = identity_mat4();
+    for (int i = 0; i <= 360; i += 1) {
+        // Tạo ma trận thể hiện cho bề mặt bên trong của bát
+        inner_instance = translate(vec3(x, y, z)) * rotate_y(i) * scale(vec3(inner_radius, height, 0.1));
+        mat4 model_base_inner = model_batdia * inner_instance; // Tính toán ma trận mô hình tổng thể
+        // Cập nhật ma trận mô hình cho shader
+        glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base_inner.m);
+        // Đặt màu sắc cho bát bên trong
+        glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), 0.9, 0.8, 0.7);
+        // Vẽ bát bên trong bằng các tam giác
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+    }
+}
+
+// Hàm để vẽ đũa
+void doi_dua(float x, float y, float z, float x1, float y1, float z1, int r, int g, int b)
+{
+    mat4 instance = identity_mat4(); // Tạo ma trận đơn vị cho thể hiện
+    // Di chuyển và thay đổi kích thước đũa
+    instance = translate(vec3(x, y, z)) * scale(vec3(x1, y1, z1));
+    mat4 model_base = model_batdia * instance; // Tính toán ma trận mô hình tổng thể
+    // Cập nhật ma trận mô hình cho shader
+    glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, model_base.m);
+    // Đặt màu sắc cho đũa
+    glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), r, g, b);
+    // Vẽ đũa bằng các tam giác
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+// Hàm để vẽ bát đĩa
+void bat_dia(float x, float y, float z, int goc)
+{
+    // Tạo ma trận mô hình cho bát đĩa với vị trí và góc quay
+    model_batdia = translate(vec3(x, y, z)) * rotate_y(goc) * scale(vec3(0.2, 0.2, 0.2));
+
+    // Đặt đĩa lớn hơn lên bàn
+    dia_tron(0.0, 0.1, 0.0, 3.0, 0.05, 1.0, 1.0, 1.0);  // Đĩa màu trắng lớn
+
+    // Đặt bát rỗng lên đĩa
+    bat_tron(0.0, 0.38, 0.0, 2.0, 1.6, 0.5, 0.58, 0.9, 1);  // Bát màu ngà rỗng
+
+    // Vẽ đũa
+    doi_dua(0, 0.7, 0, 3.6, 0.05, 0.05, 0.753, 0.314, 0.314); // Đũa
+    doi_dua(0, 0.7, 0.2, 3.6, 0.05, 0.05, 0.753, 0.314, 0.314); // Đũa
+}
+
+// Hàm để vẽ nhiều bát đĩa
+void nhieu_batdia()
+{
+    bat_dia(3, -4.5, -4, 0); // Vẽ một bát đĩa tại vị trí xác định
+    // Có thể thêm nhiều bát đĩa khác ở đây
+}
