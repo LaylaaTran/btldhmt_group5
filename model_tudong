@@ -1,0 +1,116 @@
+//========================TỦ ĐÔNG====================================
+mat4 model_tudong; // Khai báo ma trận mô hình cho tủ đông
+float tdtd[] = { 0, 0, 0 }; // Mảng lưu trữ các góc quay cho nắp
+
+// Hàm để vẽ mặt sau của tủ đông
+void matsau_tudong() {
+    mat4 instance = identity_mat4(); // Tạo ma trận đơn vị cho thể hiện
+    // Di chuyển và thay đổi kích thước mặt sau
+    instance = translate(vec3(0, 0, 0)) * scale(vec3(0.8, 0.4, 0.02));
+    mat4 tudong = model_tudong * instance; // Tính toán ma trận mô hình
+    // Cập nhật ma trận mô hình cho shader
+    glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, tudong.m);
+    // Đặt màu sắc cho mặt
+    glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), 0.81, 0.91, 0.96);
+    // Vẽ mặt bằng các tam giác
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+// Hàm để vẽ mặt trước của tủ đông
+void mattruoc_tudong() {
+    mat4 instance = identity_mat4(); // Tạo ma trận đơn vị cho thể hiện
+    // Di chuyển và thay đổi kích thước mặt trước
+    instance = translate(vec3(0, 0, 0.42)) * scale(vec3(0.8, 0.4, 0.02));
+    mat4 tudong = model_tudong * instance; // Tính toán ma trận mô hình
+    // Cập nhật ma trận mô hình cho shader
+    glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, tudong.m);
+    // Đặt màu sắc cho mặt
+    glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), 0.81, 0.91, 0.96);
+    // Vẽ mặt bằng các tam giác
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+// Hàm để vẽ mặt bên phải của tủ đông
+void matphai_tudong() {
+    mat4 instance = identity_mat4(); // Tạo ma trận đơn vị cho thể hiện
+    // Di chuyển và thay đổi kích thước mặt bên phải
+    instance = translate(vec3(-0.39, 0, 0.21)) * scale(vec3(0.02, 0.4, 0.4));
+    mat4 tudong = model_tudong * instance; // Tính toán ma trận mô hình
+    // Cập nhật ma trận mô hình cho shader
+    glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, tudong.m);
+    // Đặt màu sắc cho mặt
+    glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), 0.81, 0.91, 0.96);
+    // Vẽ mặt bằng các tam giác
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+// Hàm để vẽ mặt bên trái của tủ đông
+void mattrai_tudong() {
+    mat4 instance = identity_mat4(); // Tạo ma trận đơn vị cho thể hiện
+    // Di chuyển và thay đổi kích thước mặt bên trái
+    instance = translate(vec3(0.39, 0, 0.21)) * scale(vec3(0.02, 0.4, 0.4));
+    mat4 tudong = model_tudong * instance; // Tính toán ma trận mô hình
+    // Cập nhật ma trận mô hình cho shader
+    glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, tudong.m);
+    // Đặt màu sắc cho mặt
+    glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), 0.81, 0.91, 0.96);
+    // Vẽ mặt bằng các tam giác
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+// Hàm để vẽ mặt dưới của tủ đông
+void matduoi_tudong() {
+    mat4 instance = identity_mat4(); // Tạo ma trận đơn vị cho thể hiện
+    // Di chuyển và thay đổi kích thước mặt dưới
+    instance = translate(vec3(0, -0.21, 0.21)) * scale(vec3(0.8, 0.02, 0.44));
+    mat4 tudong = model_tudong * instance; // Tính toán ma trận mô hình
+    // Cập nhật ma trận mô hình cho shader
+    glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, tudong.m);
+    // Đặt màu sắc cho mặt
+    glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), 0.81, 0.91, 0.96);
+    // Vẽ mặt bằng các tam giác
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+// Hàm để vẽ nắp bên trái của tủ đông
+void naptrai_tudong() {
+    mat4 instance = identity_mat4(); // Tạo ma trận đơn vị cho thể hiện
+    // Di chuyển, xoay và thay đổi kích thước nắp bên trái
+    instance = translate(vec3(0.2, 0.21, 0.01)) * rotate_x(tdtd[0]) * translate(vec3(0, 0, 0.2)) * scale(vec3(0.4, 0.02, 0.44));
+    mat4 tudong = model_tudong * instance; // Tính toán ma trận mô hình
+    // Cập nhật ma trận mô hình cho shader
+    glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, tudong.m);
+    // Đặt màu sắc cho nắp
+    glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), 0.49, 0.62, 0.76);
+    // Vẽ nắp bằng các tam giác
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+// Hàm để vẽ nắp bên phải của tủ đông
+void napphai_tudong() {
+    mat4 instance = identity_mat4(); // Tạo ma trận đơn vị cho thể hiện
+    // Di chuyển, xoay và thay đổi kích thước nắp bên phải
+    instance = translate(vec3(-0.2, 0.21, 0.01)) * rotate_x(tdtd[1]) * translate(vec3(0, 0, 0.2)) * scale(vec3(0.4, 0.02, 0.44));
+    mat4 tudong = model_tudong * instance; // Tính toán ma trận mô hình
+    // Cập nhật ma trận mô hình cho shader
+    glUniformMatrix4fv(model_mat_location, 1, GL_FALSE, tudong.m);
+    // Đặt màu sắc cho nắp
+    glUniform3f(glGetUniformLocation(ProgramId, "objectColor"), 0.49, 0.62, 0.76);
+    // Vẽ nắp bằng các tam giác
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+// Hàm để vẽ tủ đông tại vị trí và góc xác định
+void tudong(float x, float y, float z, int goc) {
+    // Tạo ma trận mô hình cho tủ đông với vị trí và góc quay
+    model_tudong = translate(vec3(x, y, z)) * rotate_y(goc) * scale(vec3(6.0, 6.0, 6.0));
+    
+    // Vẽ tất cả các mặt của tủ đông
+    matsau_tudong(); // Mặt sau
+    mattruoc_tudong(); // Mặt trước
+    matphai_tudong(); // Mặt bên phải
+    mattrai_tudong(); // Mặt bên trái
+    matduoi_tudong(); // Mặt dưới
+    naptrai_tudong(); // Nắp bên trái
+    napphai_tudong(); // Nắp bên phải
+}
